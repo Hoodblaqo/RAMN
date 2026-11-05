@@ -1,1 +1,2 @@
-# RAMN uses Python's standard library only. No pip installs required.
+Flask>=3.0,<4
+gunicorn>=22,<24
