@@ -36,31 +36,38 @@ footer{border-top:1px solid var(--line);padding:24px 0 32px;display:flex;justify
 <header><a class="brand" href="/">thugorange<span>7</span></a><nav><a href="#music">music</a><a href="#elsewhere">elsewhere</a></nav></header>
 <main><section class="hero"><div class="eyebrow">WELCOME TO MY PAGE</div><h1>thugorange<span>7.</span></h1><p class="intro">My own little corner online. Music I'm into, links, and random stuff. Have a look around.</p><div class="hero-bottom"><span class="pill">PERSONAL PAGE</span><span class="pill">2026</span></div></section>
 <section class="section" id="music"><div class="section-head"><div><div class="eyebrow">01 / MUSIC</div><h2>On repeat.</h2></div><span class="hint">THE ROTATION</span></div>
-<div class="player"><div class="player-head"><span class="live">● RAMN PLAYER</span><span class="status" id="status">NO AUDIO LOADED</span></div>
+<div class="player"><div class="player-head"><span class="live">● RAMN PLAYER</span><span class="status" id="status">SPOTIFY PLAYER</span></div>
 <div class="now"><div class="cover" id="cover"><div class="cover-mark" id="coverMark">7</div></div><div><div class="track-no" id="trackNo">TRACK 01 / 03</div><div class="track-title" id="trackTitle">Kills</div><div class="artist" id="trackArtist">OsamaSon</div><div class="wave" id="wave"></div></div></div>
-<div class="timeline"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="100" value="0"><span id="total">0:00</span></div>
-<div class="controls"><button id="prev" aria-label="Previous">⏮</button><button class="main-play" id="play" aria-label="Play">▶</button><button id="next" aria-label="Next">⏭</button><div class="vol">VOL <input id="volume" type="range" min="0" max="1" step=".01" value=".8"></div></div>
-<div class="actions"><button class="action primary" id="chooseAudio">＋ CHOOSE AUDIO FILE</button><button class="action" id="chooseCover">＋ CHOOSE COVER PHOTO</button><input class="file-input" id="audioFile" type="file" accept="audio/*"><input class="file-input" id="coverFile" type="file" accept="image/*"></div>
-<p class="help" id="help">Choose an audio file from your iPhone to hear it. The three titles below are labels only until you load the matching audio files. Your cover photo is optional.</p>
-<audio id="audio" preload="metadata" playsinline></audio></div>
+<div class="controls"><button id="prev" aria-label="Previous">⏮</button><button class="main-play" id="play" aria-label="Play on Spotify">▶</button><button id="next" aria-label="Next">⏭</button></div>
+<div style="margin-top:20px;border-radius:14px;overflow:hidden"><iframe id="spotifyFrame" title="Spotify music player" src="https://open.spotify.com/embed/track/5w10naLxZ0NwN4NnzzfFQt?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+<p class="help" id="help">Play the song right here in the Spotify player. The round play button opens the selected song in Spotify.</p></div>
 <div class="track-list"><button class="track active" data-index="0"><small>01 / TRACK</small><strong>Kills</strong><em>OsamaSon</em></button><button class="track" data-index="1"><small>02 / TRACK</small><strong>My time</strong><em>Kmar</em></button><button class="track" data-index="2"><small>03 / TRACK</small><strong>LVL</strong><em>A$AP Rocky</em></button></div>
 </section>
 <section class="section" id="elsewhere"><div class="section-head"><div><div class="eyebrow">02 / LINKS</div><h2>Elsewhere.</h2></div><span class="hint">FIND ME</span></div><a class="social" href="https://www.tiktok.com/@thugorange7" target="_blank" rel="noopener"><div><small>TIKTOK / @THUGORANGE7</small><strong>thugorange7</strong></div><span>OPEN PROFILE ↗</span></a></section></main>
 <footer><span>THUGORANGE7</span><span>2026</span></footer></div>
 <script>
-const tracks=[{title:"Kills",artist:"OsamaSon"},{title:"My time",artist:"Kmar"},{title:"LVL",artist:"A$AP Rocky"}];
-let current=0,audioUrl=null,coverUrl=null;
-const el=id=>document.getElementById(id),audio=el("audio");
-function time(v){return Number.isFinite(v)?Math.floor(v/60)+":"+String(Math.floor(v%60)).padStart(2,"0"):"0:00"}
-function render(){const t=tracks[current];el("trackTitle").textContent=t.title;el("trackArtist").textContent=t.artist;el("trackNo").textContent="TRACK "+String(current+1).padStart(2,"0")+" / 03";document.querySelectorAll(".track").forEach((b,i)=>b.classList.toggle("active",i===current));el("seek").value=0;el("elapsed").textContent="0:00";el("total").textContent=time(audio.duration)}
-function changeTrack(i){current=(i+tracks.length)%tracks.length;audio.pause();if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}audio.removeAttribute("src");audio.load();el("play").textContent="▶";el("status").textContent="NO AUDIO LOADED";el("help").textContent="Choose the audio file for "+tracks[current].title+" — "+tracks[current].artist+" to play it.";render()}
-el("prev").onclick=()=>changeTrack(current-1);el("next").onclick=()=>changeTrack(current+1);document.querySelectorAll(".track").forEach(b=>b.onclick=()=>changeTrack(Number(b.dataset.index)));
-el("chooseAudio").onclick=()=>el("audioFile").click();el("play").onclick=()=>{if(!audioUrl){el("help").textContent="No song is loaded yet. Tap CHOOSE AUDIO FILE and select an MP3, M4A or other audio file.";el("audioFile").click();return}if(audio.paused){audio.play().catch(()=>{el("status").textContent="PLAYBACK BLOCKED";el("help").textContent="This file could not be played. Try an MP3 or M4A audio file."})}else audio.pause()};
-el("audioFile").onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(audioUrl)URL.revokeObjectURL(audioUrl);audioUrl=URL.createObjectURL(f);audio.src=audioUrl;el("status").textContent="LOADING AUDIO";el("help").textContent="Loaded: "+f.name;audio.load();audio.play().catch(()=>{el("status").textContent="READY — PRESS PLAY"})};
-audio.onplay=()=>{el("play").textContent="Ⅱ";el("status").textContent="NOW PLAYING"};audio.onpause=()=>{el("play").textContent="▶";if(!audio.ended&&audioUrl)el("status").textContent="PAUSED"};audio.onerror=()=>{if(audioUrl){el("status").textContent="FILE ERROR";el("help").textContent="Could not read that audio file. Try another MP3 or M4A."}};audio.onloadedmetadata=()=>{el("total").textContent=time(audio.duration);el("seek").max=audio.duration||100};audio.ontimeupdate=()=>{el("elapsed").textContent=time(audio.currentTime);el("seek").value=audio.currentTime};audio.onended=()=>changeTrack(current+1);
-el("seek").oninput=e=>{if(audioUrl)audio.currentTime=Number(e.target.value)};el("volume").oninput=e=>audio.volume=Number(e.target.value);audio.volume=.8;
-el("chooseCover").onclick=()=>el("coverFile").click();el("coverFile").onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(coverUrl)URL.revokeObjectURL(coverUrl);coverUrl=URL.createObjectURL(f);el("cover").querySelector("img")?.remove();const img=document.createElement("img");img.src=coverUrl;img.alt="Selected cover photo";el("cover").appendChild(img);el("coverMark").style.display="none";el("help").textContent="Cover photo set: "+f.name};
-for(let i=0;i<36;i++){const b=document.createElement("i");b.style.setProperty("--h",(6+Math.abs(Math.sin(i*1.37))*30)+"px");el("wave").appendChild(b)}render();
+const tracks=[
+ {title:"Kills",artist:"OsamaSon",id:"5w10naLxZ0NwN4NnzzfFQt"},
+ {title:"My time",artist:"Kmar",id:"37a5UcsLYA94ArBiJrDBms"},
+ {title:"LVL",artist:"A$AP Rocky",id:"787rCZF9i4L1cXGMkdyIk4"}
+];
+let current=0;
+const el=id=>document.getElementById(id);
+function render(){
+ const t=tracks[current];
+ el("trackTitle").textContent=t.title;
+ el("trackArtist").textContent=t.artist;
+ el("trackNo").textContent="TRACK "+String(current+1).padStart(2,"0")+" / 03";
+ el("spotifyFrame").src="https://open.spotify.com/embed/track/"+t.id+"?utm_source=generator&theme=0";
+ document.querySelectorAll(".track").forEach((b,i)=>b.classList.toggle("active",i===current));
+ el("status").textContent="SPOTIFY PLAYER";
+}
+function changeTrack(i){current=(i+tracks.length)%tracks.length;render()}
+el("prev").onclick=()=>changeTrack(current-1);
+el("next").onclick=()=>changeTrack(current+1);
+document.querySelectorAll(".track").forEach(b=>b.onclick=()=>changeTrack(Number(b.dataset.index)));
+el("play").onclick=()=>window.open("https://open.spotify.com/track/"+tracks[current].id,"_blank");
+render();
 </script></body></html>"""
 
 @app.get("/")
