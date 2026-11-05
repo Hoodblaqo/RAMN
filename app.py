@@ -4,98 +4,64 @@ from flask import Flask, render_template_string
 app = Flask(__name__)
 
 PAGE = r"""<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#e8e3d6">
-<title>thugorange7 — personal page</title>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09090d"><title>thugorange7</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-:root{--paper:#e8e3d6;--ink:#171713;--muted:#77766d;--orange:#f05b35;--line:#171713}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E")}
-.wrap{width:min(1060px,calc(100% - 42px));margin:auto}header{height:74px;border-bottom:1px solid #17171355;display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:700;font-size:18px;letter-spacing:-1px;text-decoration:none;color:var(--ink)}.brand span{color:var(--orange)}
-nav{display:flex;gap:24px}nav a,.mono{font:10px 'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);text-decoration:none}
-nav a:hover{color:var(--orange)}
-.hero{padding:95px 0 80px;position:relative;border-bottom:1px solid #17171355}
-.kicker{font:11px 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--orange)}
-h1{font-size:clamp(70px,14vw,155px);line-height:.78;letter-spacing:-.105em;margin:28px 0 25px;font-weight:700}
-h1 span{display:block;color:var(--orange);padding-left:12vw}
-.intro{max-width:420px;font-size:16px;line-height:1.55;margin:0 0 28px}
-.hero-foot{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.tag{border:1px solid var(--ink);border-radius:99px;padding:9px 14px;font:10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
-.stamp{position:absolute;right:3%;top:80px;width:112px;height:112px;border:1px solid var(--orange);border-radius:50%;display:grid;place-items:center;color:var(--orange);font:10px 'DM Mono',monospace;text-align:center;transform:rotate(12deg)}
-.section{padding:55px 0 75px}.section-head{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid #17171355;padding-bottom:15px;margin-bottom:24px}
-h2{font-size:clamp(34px,6vw,58px);letter-spacing:-.07em;margin:7px 0 0}.section-note{font:10px 'DM Mono',monospace;color:var(--muted);text-transform:uppercase}
-.player{background:#171713;color:var(--paper);padding:26px;border-radius:3px;position:relative;overflow:hidden}
-.player:after{content:"";position:absolute;width:220px;height:220px;border:1px solid #f05b3544;border-radius:50%;right:-100px;top:-110px;box-shadow:0 0 0 24px #f05b3510,0 0 0 48px #f05b3509;pointer-events:none}
-.player-top{display:flex;justify-content:space-between;align-items:center;gap:12px}.status{color:var(--orange);font:10px 'DM Mono',monospace;letter-spacing:.12em}
-.now{display:grid;grid-template-columns:130px 1fr;gap:25px;align-items:center;padding:30px 0}
-.art{aspect-ratio:1;background:var(--orange);display:grid;place-items:center;color:#171713;font-size:70px;font-weight:700;letter-spacing:-.12em;transform:rotate(-3deg);box-shadow:7px 7px 0 #e8e3d633}
-.track-title{font-size:clamp(30px,6vw,48px);font-weight:700;letter-spacing:-.07em;line-height:1}.artist{color:#aaa99e;margin-top:8px;font-size:14px}
-.wave{height:28px;display:flex;align-items:center;gap:3px;margin-top:20px}.wave i{display:block;width:3px;background:var(--orange);height:var(--h);opacity:.85}
-.timeline{display:flex;align-items:center;gap:12px;color:#aaa99e;font:10px 'DM Mono',monospace}.timeline input{flex:1;accent-color:var(--orange);height:3px}
-.controls{display:flex;align-items:center;gap:16px;border-top:1px solid #ffffff24;padding-top:18px}.controls button{background:none;border:0;color:var(--paper);font-size:22px;cursor:pointer}.controls .play{background:var(--orange);color:#171713;width:48px;height:48px;border-radius:50%;font-size:20px}.controls button:hover{color:var(--orange)}.controls .play:hover{color:#171713;transform:scale(1.05)}
-.volume{margin-left:auto;display:flex;align-items:center;gap:8px;color:#aaa99e;font:10px 'DM Mono',monospace}.volume input{width:75px;accent-color:var(--orange)}
-.track-list{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.track{background:transparent;border:1px solid #17171355;padding:14px;text-align:left;color:var(--ink);cursor:pointer;font-family:inherit}.track.active,.track:hover{background:var(--orange);border-color:var(--orange)}.track small{display:block;font:10px 'DM Mono',monospace;margin-bottom:8px}.track strong{font-size:15px}.track em{display:block;font-style:normal;font-size:12px;color:#77766d;margin-top:3px}.track.active em,.track:hover em{color:#402116}
-.upload{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:17px;border:1px dashed #e8e3d655;padding:14px;color:#aaa99e;font:11px 'DM Mono',monospace}.upload label{color:var(--orange);cursor:pointer}.upload input{display:none}
-.social{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:23px;border:1px solid #17171355;margin-top:20px;text-decoration:none;color:var(--ink);transition:.2s}.social:hover{background:var(--orange);border-color:var(--orange)}.social strong{font-size:22px;letter-spacing:-.05em}.social span{font:10px 'DM Mono',monospace;text-transform:uppercase}
-footer{border-top:1px solid #17171355;padding:22px 0 32px;display:flex;justify-content:space-between;color:var(--muted);font:10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
-@media(max-width:650px){.wrap{width:calc(100% - 30px)}.hero{padding:75px 0 60px}.stamp{width:75px;height:75px;right:0;top:28px;font-size:8px}.intro{max-width:300px}.now{grid-template-columns:92px 1fr;gap:17px;padding:25px 0}.art{font-size:48px}.player{padding:17px}.track-list{grid-template-columns:1fr}.track{display:flex;align-items:center;justify-content:space-between;gap:8px}.track small{margin:0}.track em{margin:0}nav{gap:14px}nav a{font-size:9px}.section{padding:42px 0 55px}.volume{gap:5px}.volume input{width:55px}}
-</style>
-</head>
-<body>
-<div class="wrap">
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--bg:#09090d;--panel:#111117;--panel2:#171720;--text:#f3f0f7;--muted:#85818f;--line:#ffffff16;--lime:#c6ff4d;--purple:#a58bff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#292044 0,transparent 34%),var(--bg);color:var(--text);font-family:Manrope, sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E")}
+.wrap{width:min(1050px,calc(100% - 36px));margin:auto}header{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{font-weight:800;letter-spacing:-1.2px;font-size:20px;color:var(--text);text-decoration:none}.brand span{color:var(--lime)}nav{display:flex;gap:25px}nav a{color:var(--muted);font:11px 'DM Mono',monospace;text-decoration:none;text-transform:uppercase;letter-spacing:.1em}nav a:hover{color:var(--lime)}
+.hero{padding:90px 0 75px;position:relative}.eyebrow{font:11px 'DM Mono',monospace;color:var(--lime);letter-spacing:.16em;text-transform:uppercase}
+h1{font-size:clamp(65px,13vw,140px);line-height:.86;letter-spacing:-.095em;margin:22px 0 24px;font-weight:800}h1 span{color:var(--purple)}
+.intro{font-size:16px;color:#b7b2c1;line-height:1.7;max-width:450px}.hero-bottom{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}.pill{border:1px solid var(--line);border-radius:99px;padding:9px 13px;color:#aaa5b4;font:10px 'DM Mono',monospace;letter-spacing:.08em}
+.section{padding:20px 0 70px}.section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:22px}.section-head h2{font-size:clamp(32px,6vw,52px);letter-spacing:-.07em;margin:8px 0 0}.hint{font:10px 'DM Mono',monospace;color:var(--muted);text-transform:uppercase}
+.player{background:linear-gradient(135deg,#191923,#101016 70%);border:1px solid #ffffff18;border-radius:22px;padding:26px;box-shadow:0 24px 80px #0008;position:relative;overflow:hidden}.player:before{content:"";position:absolute;width:340px;height:340px;border-radius:50%;background:#9a75ff12;filter:blur(4px);right:-160px;top:-180px;pointer-events:none}
+.player-head{display:flex;justify-content:space-between;align-items:center;position:relative}.live{color:var(--lime);font:10px 'DM Mono',monospace;letter-spacing:.12em}.status{font:10px 'DM Mono',monospace;color:var(--muted)}
+.now{display:grid;grid-template-columns:190px 1fr;gap:30px;align-items:center;padding:34px 0 26px;position:relative}
+.cover{width:100%;aspect-ratio:1;border-radius:15px;background:linear-gradient(145deg,#9d7cff,#342354 65%,#c6ff4d);display:grid;place-items:center;overflow:hidden;position:relative;box-shadow:0 15px 40px #0008}.cover img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.cover-mark{font-size:84px;font-weight:800;letter-spacing:-.12em;color:#09090d}
+.track-no{font:10px 'DM Mono',monospace;color:var(--lime);letter-spacing:.13em}.track-title{font-size:clamp(30px,5vw,48px);font-weight:800;letter-spacing:-.07em;line-height:1.05;margin-top:9px}.artist{color:var(--muted);margin-top:8px;font-size:15px}
+.wave{height:38px;display:flex;align-items:center;gap:4px;margin-top:23px}.wave i{width:3px;height:var(--h);background:linear-gradient(var(--purple),var(--lime));border-radius:5px;opacity:.85}
+.timeline{display:flex;gap:12px;align-items:center;color:#8d8997;font:10px 'DM Mono',monospace}.timeline input{flex:1;accent-color:var(--lime);min-width:0}
+.controls{display:flex;align-items:center;gap:15px;border-top:1px solid var(--line);padding-top:19px}.controls button{border:0;background:none;color:var(--text);font-size:20px;cursor:pointer}.controls .main-play{width:54px;height:54px;border-radius:50%;background:var(--lime);color:#101016;font-size:22px;box-shadow:0 0 25px #c6ff4d30}.controls .main-play:hover{transform:scale(1.06)}.controls button:hover{color:var(--lime)}.vol{margin-left:auto;display:flex;gap:9px;align-items:center;font:10px 'DM Mono',monospace;color:var(--muted)}.vol input{width:85px;accent-color:var(--lime)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}.action{border:1px solid #ffffff25;border-radius:10px;background:#ffffff08;color:var(--text);padding:12px 15px;font:10px 'DM Mono',monospace;letter-spacing:.08em;cursor:pointer}.action.primary{background:var(--lime);border-color:var(--lime);color:#101016}.action:hover{border-color:var(--lime)}
+.track-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.track{background:#ffffff06;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:15px;text-align:left;cursor:pointer;font-family:inherit}.track.active,.track:hover{border-color:#c6ff4d88;background:#c6ff4d0b}.track small{display:block;color:var(--muted);font:10px 'DM Mono',monospace;margin-bottom:9px}.track strong{font-size:15px}.track em{display:block;font-style:normal;color:var(--muted);font-size:12px;margin-top:4px}
+.help{color:var(--muted);font-size:12px;line-height:1.6;margin:13px 2px 0}.file-input{display:none}
+.social{margin-top:16px;border:1px solid var(--line);border-radius:15px;padding:21px;display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:var(--text);background:#ffffff05}.social:hover{border-color:var(--purple);background:#a58bff0b}.social small{display:block;font:10px 'DM Mono',monospace;color:var(--muted);margin-bottom:8px}.social strong{font-size:21px;letter-spacing:-.04em}.social span{font:10px 'DM Mono',monospace;color:var(--lime)}
+footer{border-top:1px solid var(--line);padding:24px 0 32px;display:flex;justify-content:space-between;color:var(--muted);font:10px 'DM Mono',monospace;letter-spacing:.1em}
+@media(max-width:650px){.wrap{width:calc(100% - 28px)}header{height:65px}nav{gap:14px}nav a{font-size:9px}.hero{padding:70px 0 60px}.now{grid-template-columns:112px 1fr;gap:18px;padding:27px 0 22px}.cover-mark{font-size:55px}.player{padding:17px;border-radius:17px}.track-list{grid-template-columns:1fr}.track{display:flex;align-items:center;justify-content:space-between;gap:12px}.track small{margin:0}.track em{margin:0}.section{padding-bottom:52px}.vol input{width:60px}.controls{gap:10px}}
+</style></head><body><div class="wrap">
 <header><a class="brand" href="/">thugorange<span>7</span></a><nav><a href="#music">music</a><a href="#elsewhere">elsewhere</a></nav></header>
-<main>
-<section class="hero">
-<div class="stamp">MADE BY<br>ME · NOT<br>PERFECT</div>
-<div class="kicker">A LITTLE CORNER OF THE INTERNET</div>
-<h1>thug<span>orange7.</span></h1>
-<p class="intro">Just my page. A few tracks I like, things I'm into, and whatever else I feel like putting here.</p>
-<div class="hero-foot"><span class="tag">PERSONAL SITE</span><span class="tag">EST. 2026</span></div>
+<main><section class="hero"><div class="eyebrow">WELCOME TO MY PAGE</div><h1>thugorange<span>7.</span></h1><p class="intro">My own little corner online. Music I'm into, links, and random stuff. Have a look around.</p><div class="hero-bottom"><span class="pill">PERSONAL PAGE</span><span class="pill">2026</span></div></section>
+<section class="section" id="music"><div class="section-head"><div><div class="eyebrow">01 / MUSIC</div><h2>On repeat.</h2></div><span class="hint">THE ROTATION</span></div>
+<div class="player"><div class="player-head"><span class="live">● RAMN PLAYER</span><span class="status" id="status">NO AUDIO LOADED</span></div>
+<div class="now"><div class="cover" id="cover"><div class="cover-mark" id="coverMark">7</div></div><div><div class="track-no" id="trackNo">TRACK 01 / 03</div><div class="track-title" id="trackTitle">Kills</div><div class="artist" id="trackArtist">OsamaSon</div><div class="wave" id="wave"></div></div></div>
+<div class="timeline"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="100" value="0"><span id="total">0:00</span></div>
+<div class="controls"><button id="prev" aria-label="Previous">⏮</button><button class="main-play" id="play" aria-label="Play">▶</button><button id="next" aria-label="Next">⏭</button><div class="vol">VOL <input id="volume" type="range" min="0" max="1" step=".01" value=".8"></div></div>
+<div class="actions"><button class="action primary" id="chooseAudio">＋ CHOOSE AUDIO FILE</button><button class="action" id="chooseCover">＋ CHOOSE COVER PHOTO</button><input class="file-input" id="audioFile" type="file" accept="audio/*"><input class="file-input" id="coverFile" type="file" accept="image/*"></div>
+<p class="help" id="help">Choose an audio file from your iPhone to hear it. The three titles below are labels only until you load the matching audio files. Your cover photo is optional.</p>
+<audio id="audio" preload="metadata" playsinline></audio></div>
+<div class="track-list"><button class="track active" data-index="0"><small>01 / TRACK</small><strong>Kills</strong><em>OsamaSon</em></button><button class="track" data-index="1"><small>02 / TRACK</small><strong>My time</strong><em>Kmar</em></button><button class="track" data-index="2"><small>03 / TRACK</small><strong>LVL</strong><em>A$AP Rocky</em></button></div>
 </section>
-<section class="section" id="music">
-<div class="section-head"><div><div class="kicker">01 / THE ROTATION</div><h2>On repeat.</h2></div><span class="section-note">3 tracks / RAMN audio</span></div>
-<div class="player">
-<div class="player-top"><span class="status">● LOCAL PLAYER</span><span class="mono" id="playerState" style="color:#aaa99e">READY / 001</span></div>
-<div class="now"><div class="art" id="coverMark">K</div><div><div class="mono" id="trackIndex" style="color:#f05b35">TRACK 01</div><div class="track-title" id="trackTitle">Kills</div><div class="artist" id="trackArtist">OsamaSon</div><div class="wave" id="wave"></div></div></div>
-<div class="timeline"><span id="currentTime">0:00</span><input id="seek" type="range" min="0" max="100" value="0"><span id="duration">0:00</span></div>
-<div class="controls"><button id="prev" aria-label="Previous track">⏮</button><button class="play" id="play" aria-label="Play">▶</button><button id="next" aria-label="Next track">⏭</button><div class="volume">VOL <input id="volume" type="range" min="0" max="1" step=".01" value=".8"></div></div>
-<audio id="audio" preload="metadata"></audio>
-<div class="track-list" id="trackList">
-<button class="track active" data-index="0"><small>01 / PICK</small><strong>Kills</strong><em>OsamaSon</em></button>
-<button class="track" data-index="1"><small>02 / PICK</small><strong>My time</strong><em>Kmar</em></button>
-<button class="track" data-index="2"><small>03 / PICK</small><strong>LVL</strong><em>A$AP Rocky</em></button>
-</div>
-<div class="upload"><span id="fileLabel">Choose an audio file to play it here.</span><label for="audioFile">＋ LOAD AUDIO</label><input id="audioFile" type="file" accept="audio/*"></div>
-</div>
-</section>
-<section class="section" id="elsewhere" style="padding-top:0">
-<div class="section-head"><div><div class="kicker">02 / ELSEWHERE</div><h2>Find me.</h2></div><span class="section-note">the internet</span></div>
-<a class="social" href="https://www.tiktok.com/@thugorange7" target="_blank" rel="noopener"><div><span>TIKTOK / @THUGORANGE7</span><strong>thugorange7</strong></div><span>VIEW PROFILE ↗</span></a>
-</section>
-</main>
-<footer><span>THUGORANGE7</span><span>MADE BY ME · 2026</span></footer>
-</div>
+<section class="section" id="elsewhere"><div class="section-head"><div><div class="eyebrow">02 / LINKS</div><h2>Elsewhere.</h2></div><span class="hint">FIND ME</span></div><a class="social" href="https://www.tiktok.com/@thugorange7" target="_blank" rel="noopener"><div><small>TIKTOK / @THUGORANGE7</small><strong>thugorange7</strong></div><span>OPEN PROFILE ↗</span></a></section></main>
+<footer><span>THUGORANGE7</span><span>2026</span></footer></div>
 <script>
-const tracks=[{title:"Kills",artist:"OsamaSon",mark:"K"},{title:"My time",artist:"Kmar",mark:"M"},{title:"LVL",artist:"A$AP Rocky",mark:"L"}];
-let current=0,objectUrl=null;
-const $=id=>document.getElementById(id),audio=$("audio");
-function fmt(v){if(!Number.isFinite(v))return"0:00";return Math.floor(v/60)+":"+String(Math.floor(v%60)).padStart(2,"0")}
-function render(){const t=tracks[current];$("trackTitle").textContent=t.title;$("trackArtist").textContent=t.artist;$("coverMark").textContent=t.mark;$("trackIndex").textContent="TRACK "+String(current+1).padStart(2,"0");$("playerState").textContent=audio.src?"FILE LOADED":"READY / "+String(current+1).padStart(3,"0");document.querySelectorAll(".track").forEach((b,i)=>b.classList.toggle("active",i===current));$("seek").value=0;$("currentTime").textContent="0:00";$("duration").textContent=fmt(audio.duration)}
-function select(i){current=(i+tracks.length)%tracks.length;audio.pause();audio.removeAttribute("src");audio.load();if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}$("play").textContent="▶";render()}
-$("prev").onclick=()=>select(current-1);$("next").onclick=()=>select(current+1);document.querySelectorAll(".track").forEach(b=>b.onclick=()=>select(Number(b.dataset.index)));
-$("play").onclick=async()=>{if(!audio.src){$("audioFile").click();return}if(audio.paused){try{await audio.play()}catch(e){$("playerState").textContent="TAP TO RETRY"}}else audio.pause()};
-audio.onplay=()=>{$("play").textContent="Ⅱ";$("playerState").textContent="PLAYING"};audio.onpause=()=>{$("play").textContent="▶";if(!audio.ended)$("playerState").textContent="PAUSED"};audio.onended=()=>select(current+1);
-audio.onloadedmetadata=()=>{$("duration").textContent=fmt(audio.duration);$("seek").max=audio.duration||100};audio.ontimeupdate=()=>{$("currentTime").textContent=fmt(audio.currentTime);$("seek").value=audio.currentTime};
-$("seek").oninput=e=>{if(audio.src)audio.currentTime=Number(e.target.value)};$("volume").oninput=e=>audio.volume=Number(e.target.value);audio.volume=.8;
-$("audioFile").onchange=e=>{const f=e.target.files[0];if(!f)return;if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(f);audio.src=objectUrl;$("fileLabel").textContent=f.name;$("playerState").textContent="FILE LOADED";audio.play().catch(()=>{$("playerState").textContent="READY TO PLAY"});$("play").textContent="Ⅱ"};
-for(let i=0;i<34;i++){const bar=document.createElement("i");bar.style.setProperty("--h",(5+Math.abs(Math.sin(i*1.63))*22)+"px");$("wave").appendChild(bar)}
-render();
-</script>
-</body></html>"""
+const tracks=[{title:"Kills",artist:"OsamaSon"},{title:"My time",artist:"Kmar"},{title:"LVL",artist:"A$AP Rocky"}];
+let current=0,audioUrl=null,coverUrl=null;
+const el=id=>document.getElementById(id),audio=el("audio");
+function time(v){return Number.isFinite(v)?Math.floor(v/60)+":"+String(Math.floor(v%60)).padStart(2,"0"):"0:00"}
+function render(){const t=tracks[current];el("trackTitle").textContent=t.title;el("trackArtist").textContent=t.artist;el("trackNo").textContent="TRACK "+String(current+1).padStart(2,"0")+" / 03";document.querySelectorAll(".track").forEach((b,i)=>b.classList.toggle("active",i===current));el("seek").value=0;el("elapsed").textContent="0:00";el("total").textContent=time(audio.duration)}
+function changeTrack(i){current=(i+tracks.length)%tracks.length;audio.pause();if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}audio.removeAttribute("src");audio.load();el("play").textContent="▶";el("status").textContent="NO AUDIO LOADED";el("help").textContent="Choose the audio file for "+tracks[current].title+" — "+tracks[current].artist+" to play it.";render()}
+el("prev").onclick=()=>changeTrack(current-1);el("next").onclick=()=>changeTrack(current+1);document.querySelectorAll(".track").forEach(b=>b.onclick=()=>changeTrack(Number(b.dataset.index)));
+el("chooseAudio").onclick=()=>el("audioFile").click();el("play").onclick=()=>{if(!audioUrl){el("help").textContent="No song is loaded yet. Tap CHOOSE AUDIO FILE and select an MP3, M4A or other audio file.";el("audioFile").click();return}if(audio.paused){audio.play().catch(()=>{el("status").textContent="PLAYBACK BLOCKED";el("help").textContent="This file could not be played. Try an MP3 or M4A audio file."})}else audio.pause()};
+el("audioFile").onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(audioUrl)URL.revokeObjectURL(audioUrl);audioUrl=URL.createObjectURL(f);audio.src=audioUrl;el("status").textContent="LOADING AUDIO";el("help").textContent="Loaded: "+f.name;audio.load();audio.play().catch(()=>{el("status").textContent="READY — PRESS PLAY"})};
+audio.onplay=()=>{el("play").textContent="Ⅱ";el("status").textContent="NOW PLAYING"};audio.onpause=()=>{el("play").textContent="▶";if(!audio.ended&&audioUrl)el("status").textContent="PAUSED"};audio.onerror=()=>{if(audioUrl){el("status").textContent="FILE ERROR";el("help").textContent="Could not read that audio file. Try another MP3 or M4A."}};audio.onloadedmetadata=()=>{el("total").textContent=time(audio.duration);el("seek").max=audio.duration||100};audio.ontimeupdate=()=>{el("elapsed").textContent=time(audio.currentTime);el("seek").value=audio.currentTime};audio.onended=()=>changeTrack(current+1);
+el("seek").oninput=e=>{if(audioUrl)audio.currentTime=Number(e.target.value)};el("volume").oninput=e=>audio.volume=Number(e.target.value);audio.volume=.8;
+el("chooseCover").onclick=()=>el("coverFile").click();el("coverFile").onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(coverUrl)URL.revokeObjectURL(coverUrl);coverUrl=URL.createObjectURL(f);el("cover").querySelector("img")?.remove();const img=document.createElement("img");img.src=coverUrl;img.alt="Selected cover photo";el("cover").appendChild(img);el("coverMark").style.display="none";el("help").textContent="Cover photo set: "+f.name};
+for(let i=0;i<36;i++){const b=document.createElement("i");b.style.setProperty("--h",(6+Math.abs(Math.sin(i*1.37))*30)+"px");el("wave").appendChild(b)}render();
+</script></body></html>"""
 
 @app.get("/")
 def home():
